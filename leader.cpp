@@ -51,6 +51,7 @@ int Leader::check() {
             for (int i = 0; i < mpi -> getSize(); i++) {
                 if (i != mpi -> getRank()) {
                     mpi -> sendMsgNb(LEADER_CHECK, i, clock -> timestamp);
+                    mpi -> sendMsgNb(LEADER_CHECK, i, clock -> timestamp);
                 }
             }
             cout << "Rank " << mpi -> getRank() << " lidera há " << i + 1 << " segundos." << endl;
