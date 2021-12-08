@@ -28,7 +28,9 @@ class MPI_Service{
         int getRank();
         int getSize();
         int sendMsg(int message, int dest, int timestamp);
+        int sendMsgNb(int message, int dest, int timestamp);
         int receiveMsg(int *ret, int src);
         int receiveMsg(int *ret, int src, MPI_Status *status);
+        int receiveMsgNb(int *ret, int src, MPI_Request *request, MPI_Status *status);
 };
 #endif

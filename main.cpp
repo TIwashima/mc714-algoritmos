@@ -2,6 +2,7 @@
 #include "mpi.hpp"
 #include "lamport.hpp"
 #include "mutex.hpp"
+#include "leader.hpp"
 
 using namespace std;
 
@@ -66,6 +67,17 @@ int main (int argc, char** argv) {
     }
     join();
 
+    // Leader
+    Leader *leader = new Leader();
+    while(1){
+        leader -> check();
+        if (mpi -> getRank() == 2){
+            cout << "End rank 2." << endl;
+            break;
+        }
+    }
+
+    join();
     delete(clock);
     MPI_Service::destroy();
     return 0;
