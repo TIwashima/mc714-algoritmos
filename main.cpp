@@ -1,8 +1,25 @@
 #include <iostream>
 #include "mpi.hpp"
 #include "lamport.hpp"
+#include "mutex.hpp"
 
 using namespace std;
+
+void join() {
+    Lamport *clock = Lamport::getClock();
+    MPI_Service *mpi = MPI_Service::getSingleton();
+    if (mpi -> getRank() == 0) {
+        char aux;
+        cin >> aux;
+        mpi -> sendMsg(JOIN, 1, clock -> timestamp);
+        mpi -> sendMsg(JOIN, 2, clock -> timestamp);
+    } else {
+        int message;
+        do {
+            mpi -> receiveMsg(&message, 0);
+        } while (message != JOIN);
+    }
+}
 
 int main (int argc, char** argv) {
     Lamport *clock = Lamport::getClock();
@@ -29,18 +46,25 @@ int main (int argc, char** argv) {
         }
     }
     cout << "Rank " << rank << " timestamp " << clock -> timestamp << endl;
+    join();
 
-    if (mpi -> getRank() == 0) {
-        char aux;
-        cin >> aux;
-        mpi -> sendMsg(JOIN, 1, clock -> timestamp);
-        mpi -> sendMsg(JOIN, 2, clock -> timestamp);
+    // Mutex
+    clock -> tick();
+    
+    if (rank == RANK) {
+        Mutex_Coord *coord = new Mutex_Coord();
+        coord -> startReceiving();
+        delete(coord);
     } else {
-        int message;
-        do {
-            mpi -> receiveMsg(&message, 0);
-        } while (message != JOIN);
+        Mutex_Slave *slave = new Mutex_Slave();
+        slave -> request();
+        for (int i = 0; i < 10; i++)
+            cout << "Rank " << rank << endl;
+        slave-> free();
+        Mutex_Coord::stopReceiving();
+        delete(slave);
     }
+    join();
 
     delete(clock);
     MPI_Service::destroy();
