@@ -32,7 +32,7 @@ int main (int argc, char** argv) {
     clock -> tick();
     cout << "Rank " << rank << " timestamp " << clock -> timestamp << endl;
     for (int i = 0; i < 2; i++) {
-        if (rank = 0) {
+        if (rank == 0) {
             int message;
             mpi -> sendMsg(SYNC, 1, clock -> timestamp);
             mpi -> receiveMsg(&message, 2);
