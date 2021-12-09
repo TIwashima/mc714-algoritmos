@@ -23,10 +23,10 @@ void join() {
 }
 
 int main (int argc, char** argv) {
-    Lamport *clock = Lamport::getClock();
     MPI_Service *mpi = MPI_Service::getSingleton();
     int size = mpi -> getSize();
     int rank = mpi -> getRank();
+    Lamport *clock = Lamport::getClock(rank);
 
     // Lamport
     clock -> tick();
