@@ -79,7 +79,7 @@ int main (int argc, char** argv) {
 
     join();
 
-    delete(leader)
+    delete(leader);
     delete(clock);
     MPI_Service::destroy();
     return 0;
