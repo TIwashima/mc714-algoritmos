@@ -1,16 +1,12 @@
 #include "mutex.hpp"
 
-Mutex_Coord::Mutex_Coord(){
+Mutex_Coord::Mutex_Coord() {
     mutex = FREE;
     receiving = false;
     Q = new queue<int>();
 }
 
-Mutex_Coord::~Mutex_Coord(){
-    delete(Q);
-}
-
-void Mutex_Coord::receive(){
+void Mutex_Coord::receive() {
     Lamport *clock = Lamport::getClock();
     MPI_Service *mpi = MPI_Service::getSingleton();
 
@@ -41,22 +37,18 @@ void Mutex_Coord::receive(){
     }
 }
 
-void Mutex_Coord::startReceiving(){
+void Mutex_Coord::startReceiving() {
     receiving = true;
     receive();
 }
 
-void Mutex_Coord::stopReceiving(){
+void Mutex_Coord::stopReceiving() {
     Lamport *clock = Lamport::getClock();
     MPI_Service *mpi = MPI_Service::getSingleton();
     mpi -> sendMsg(STOP_RECEIVING, RANK, clock -> timestamp);
 }
 
-
-            
-
-
-int Mutex_Slave::request(){
+int Mutex_Slave::request() {
     Lamport *clock = Lamport::getClock();
     MPI_Service *mpi = MPI_Service::getSingleton();
     mpi -> sendMsg(MUTEX_REQUEST, RANK, clock -> timestamp);

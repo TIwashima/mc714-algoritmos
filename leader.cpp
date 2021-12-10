@@ -9,7 +9,7 @@ int Leader::election() {
     Lamport *clock = Lamport::getClock();
     MPI_Service *mpi = MPI_Service::getSingleton();
 
-    for (int i = 0; i < mpi->getSize(); i++) {
+    for (int i = 0; i < mpi -> getSize(); i++) {
         if (i != mpi -> getRank()) {
             mpi -> sendMsgNb(ELECTION, i, clock -> timestamp);
         }
@@ -20,13 +20,13 @@ int Leader::election() {
     MPI_Status status;
 
     while (1) {
-        int timeout = mpi->receiveMsgNb(&message, MPI_ANY_SOURCE, &request, &status);
+        int timeout = mpi -> receiveMsgNb(&message, MPI_ANY_SOURCE, &request, &status);
         if (timeout) {
             rank = mpi -> getRank();
             return 0;
         }
 
-        if (message == ELECTION_ACK || message == LEADER_CHECK){
+        if (message == ELECTION_ACK || message == LEADER_CHECK) {
             if (mpi -> getRank() < status.MPI_SOURCE) {
                 return 0;
             }
@@ -62,7 +62,7 @@ int Leader::check() {
         MPI_Request request;
         MPI_Status status;
         int timeout = mpi -> receiveMsgNb(&message, MPI_ANY_SOURCE, &request, &status);
-        if(timeout)
+        if (timeout)
             election();
 
         if (message == ELECTION) {

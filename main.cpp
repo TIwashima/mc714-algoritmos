@@ -69,7 +69,7 @@ int main (int argc, char** argv) {
 
     // Leader
     Leader *leader = new Leader();
-    while(1){
+    while (1) {
         leader -> check();
         if (mpi -> getRank() == 2){
             cout << "End rank 2." << endl;
