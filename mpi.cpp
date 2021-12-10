@@ -6,10 +6,6 @@ MPI_Service::MPI_Service() {
     MPI_Init(NULL, NULL);
 }
 
-MPI_Service::~MPI_Service() {
-    MPI_Finalize();
-};
-
 MPI_Service* MPI_Service::instance = NULL;
 
 MPI_Service* MPI_Service::getSingleton() {

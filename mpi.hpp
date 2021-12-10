@@ -19,7 +19,6 @@ using namespace std;
 class MPI_Service{
     private:
         MPI_Service();
-        ~MPI_Service();
         static MPI_Service *instance;
 
     public:
