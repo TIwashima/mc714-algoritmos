@@ -6,6 +6,10 @@ Mutex_Coord::Mutex_Coord() {
     Q = new queue<int>();
 }
 
+Mutex_Coord::~Mutex_Coord() {
+    delete(Q);
+}
+
 void Mutex_Coord::receive() {
     Lamport *clock = Lamport::getClock();
     MPI_Service *mpi = MPI_Service::getSingleton();
