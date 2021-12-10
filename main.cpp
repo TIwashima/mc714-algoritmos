@@ -30,7 +30,7 @@ int main (int argc, char** argv) {
 
     // Lamport
     clock -> tick();
-    cout << "Rank " << rank << " timestamp " << clock -> timestamp << endl;
+    cout << "[" << rank << "] timestamp " << clock -> timestamp << endl;
     for (int i = 0; i < 2; i++) {
         if (rank == 0) {
             int message;
@@ -46,7 +46,7 @@ int main (int argc, char** argv) {
             mpi -> sendMsg(SYNC, 0, clock -> timestamp);
         }
     }
-    cout << "Rank " << rank << " timestamp " << clock -> timestamp << endl;
+    cout << "[" << rank << "] timestamp " << clock -> timestamp << endl;
     join();
 
     // Mutex
@@ -60,7 +60,7 @@ int main (int argc, char** argv) {
         Mutex_Slave *slave = new Mutex_Slave();
         slave -> request();
         for (int i = 0; i < 10; i++)
-            cout << "Rank " << rank << endl;
+            cout << "Dono do mutex: " << rank << endl;
         slave-> free();
         Mutex_Coord::stopReceiving();
         delete(slave);
@@ -78,6 +78,8 @@ int main (int argc, char** argv) {
     }
 
     join();
+
+    delete(leader)
     delete(clock);
     MPI_Service::destroy();
     return 0;
